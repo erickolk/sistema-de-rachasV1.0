@@ -1,0 +1,7 @@
+version: "3"
+services:
+  sistema-rachas-front:
+    build:
+      context: .
+    ports:
+      - "3001:3000"

@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  label {
+    @apply text-xs font-semibold mb-2 inline-block;
+  }
+  body {
+    @apply bg-white text-zinc-600;
+  }
+}
+
+@layer components {
+  .container {
+    @apply px-4 pb-4 xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-lg mx-auto;
+  }
+
+  .form-container {
+    @apply p-4 w-full max-w-screen-sm mx-auto;
+  }
+
+  .form-container-mobile {
+    @apply p-4  w-full max-w-[460px] mx-auto;
+  }
+}
+

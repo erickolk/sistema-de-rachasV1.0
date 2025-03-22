@@ -1,0 +1,333 @@
+### Definição de Variáveis Globais
+@baseUrl = http://localhost:3002
+@token = {{AuthLogin.response.body.token}}
+
+###
+
+# @name AuthLogin
+POST {{baseUrl}}/auth/login
+content-type: application/json
+
+{
+  "email": "don@g.com",
+  "password": "Senha123"
+}
+
+###
+
+# @name AuthRegisterUser
+POST {{baseUrl}}/auth/register
+content-type: application/json
+
+{
+  "name": "Cliente",
+  "email": "cliente@gmail.com",
+  "password": "Senha123",
+  "photoUrl": "https://lasdijasidas.com",
+  "role": 2
+}
+
+###
+
+# @name AuthGetUserProfile
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+###
+
+# @name SoccerFieldGetAll
+GET {{baseUrl}}/soccer-field
+Authorization: Bearer {{token}}
+
+###
+
+# @name SoccerFieldDelete
+DELETE {{baseUrl}}/soccer-field/671bff73e7b36b5e83161c02
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# @name SoccerFieldGetAllByUser
+GET {{baseUrl}}/soccer-field/by-user
+Authorization: Bearer {{token}}
+
+###
+
+# @name SoccerFieldRegister
+POST {{baseUrl}}/soccer-field
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Itaquerão",
+  "pixKey": "8775Eri",
+  "rentalValue": 150,
+  "workStartTime": "01:00:00",
+  "workFinishTime": "09:00:00",
+  "workDays": ["segunda","terça","quarta","quinta", "sexta", "sabado", "domingo"]
+}
+
+###
+
+# @name SoccerFieldGetAvailableTimes
+GET {{baseUrl}}/soccer-field/6776dbe2935c57bb3c596b9f/available-times?day=2024-11-05
+Authorization: Bearer {{token}}
+
+###
+
+# @name PlayerRegister
+POST {{baseUrl}}/player
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "joao33",
+  "stars": 4
+}
+
+###
+
+# @name PlayerDelete
+DELETE {{baseUrl}}/player/6747a87e6b3e9e5c351883be
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# @name MatchRegister
+POST {{baseUrl}}/match
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Corinthians",
+  "description":"00",
+  "thumb": "Dezembro",
+  "soccerField": "678e6c506161190d152d91c1",
+  "teams": [
+    {
+      "name": "Team 1",
+      "players": []
+    },
+    {
+      "name": "Team 2",
+      "players": []
+    }
+  ],
+  "players": [
+    {
+      "name": "João",
+      "stars": 1,
+      "position": "Atacante"
+    },
+    {
+      "name": "Jose",
+      "stars": 2,
+      "position": "Atacante"
+    },
+    {
+      "name": "Kaio",
+      "stars": 3,
+      "position": "Atacante"
+    },
+    {
+      "name": "Antonio",
+      "stars": 1,
+      "position": "Atacante"
+    },
+    {
+      "name": "Marcos33",
+      "stars": 2,
+      "position": "Atacante"
+    },
+    {
+      "name": "Rodrigo",
+      "stars": 2,
+      "position": "Atacante"
+    },
+    {
+      "name": "Oliver",
+      "stars": 5,
+      "position": "Atacante"
+    },
+    {
+      "name": "Cristiano",
+      "stars": 3,
+      "position": "Atacante"
+    },{
+      "name": "Ortega",
+      "stars": 2,
+      "position": "Atacante"
+    },
+    {
+      "name": "Mariano",
+      "stars": 3,
+      "position": "Atacante"
+    },
+    {
+      "name": "Alvin",
+      "stars": 2,
+      "position": "Atacante"
+    },
+    {
+      "name": "Marivan",
+      "stars": 1,
+      "position": "Atacante"
+    },
+    {
+      "name": "Tony",
+      "stars": 5,
+      "position": "Atacante"
+    }
+  ],
+  "schedules": [
+    {
+      "startTime": "10:00:00",
+      "finishTime": "11:00:00",
+      "day": "2024-11-05"
+    }
+  ]
+}
+
+###
+
+# @name MatchUpdate
+PUT {{baseUrl}}/match/6749f8f904cedd43d36187dd
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "players": [
+    {
+      "name": "João",
+      "stars": 4,
+      "position": "Atacante"
+    }
+  ]
+}
+
+###
+
+# @name MatchFindById
+GET {{baseUrl}}/match/677e9a76637f8e62432e9866
+Authorization: Bearer {{token}}
+
+
+###
+
+# @name DeleteMatch
+DELETE {{baseUrl}}/match/6756e5587985a9b78ee919bb
+Authorization: Bearer {{token}}
+
+###
+
+# @name MatchGetAll
+GET {{baseUrl}}/match
+Authorization: Bearer {{token}}
+
+###
+
+# @name MatchCalculatePaymentPerPlayer
+GET {{baseUrl}}/match/6759fbed256218e1005341cd/amount-paid-players
+Authorization: Bearer {{token}}
+
+###
+
+# @name GenerateTeamsByPlayerStars
+GET {{baseUrl}}/match/676319df8fbfd289252d2847/generate-teams-by-players-stars
+Authorization: Bearer {{token}}
+
+###
+
+# @name SoccerFieldFindById
+GET {{baseUrl}}/soccer-field/find/676eb7d2b0ea17087abcb3f2
+Authorization: Bearer {{token}}
+
+###
+
+# @name SoccerFieldUpdate
+PUT {{baseUrl}}/soccer-field/676eb7d2b0ea17087abcb3f2
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Campo Atualizado",
+  "pixKey": "novaChavePix",
+  "rentalValue": 200,
+  "workStartTime": "08:00:00",
+  "workFinishTime": "22:00:00",
+  "workDays": ["segunda", "terça", "quarta", "quinta", "sexta"]
+}
+###
+
+###
+# @name GetOwnerMatches
+GET {{baseUrl}}/soccer-field/owner/matches
+Authorization: Bearer {{token}}
+###
+
+###
+# @name GetOwnerDashboard
+GET {{baseUrl}}/soccer-field/owner/dashboard
+Authorization: Bearer {{token}}
+
+###
+
+###
+# @name GetUserMatches
+GET {{baseUrl}}/match/by-user
+Authorization: Bearer {{token}}
+###
+
+
+###
+# @name MakePayment
+POST {{baseUrl}}/match/payment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "paymentDate": "2025-01-03T01:07:13.325Z",
+  "paymentMethod": "pix",
+  "discount": 20,
+  "amount": 100,
+  "totalAmountWithDiscount": 80,
+  "match": "67925af0aaaa330eb947725a",
+  "user": "678fcc03445fda659b6f3bec"
+}
+
+###
+# @name Get Payments By User
+GET {{baseUrl}}/payments/owner
+Authorization: Bearer {{token}}
+
+###
+
+# @name GetUnpaidUserMatches
+GET {{baseUrl}}/match/by-user/unpaid
+Authorization: Bearer {{token}}
+
+###
+
+# @name GetFinancialReport
+GET {{baseUrl}}/payments/owner/financial-report
+Authorization: Bearer {{token}}
+
+###
+
+# @name GetFinancialReportWithFilters
+GET {{baseUrl}}/payments/owner/financial-report?startDate=2024-01-01&endDate=2024-12-31&soccerFieldId=678e6c506161190d152d91c1
+Authorization: Bearer {{token}}
+
+###
+
+# @name GetFinancialReportByMonth
+GET {{baseUrl}}/payments/owner/financial-report?startDate=2024-03-01&endDate=2024-03-31
+Authorization: Bearer {{token}}
+
+###
+
+# @name GetFinancialReportByClient
+GET {{baseUrl}}/payments/owner/financial-report?clientId=YOUR_CLIENT_ID
+Authorization: Bearer {{token}}

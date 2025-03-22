@@ -1,0 +1,42 @@
+{
+  "name": "sistema-rachas-domain",
+  "version": "1.0.8",
+  "description": "Domínio contendo recursos da aplicação de Rachas",
+  "files": [
+    "dist",
+    "dto",
+    "entities",
+    "enums",
+    "errors",
+    "factories",
+    "object-values",
+    "types"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhonxbatista/sistema-rachas-domain.git"
+  },
+  "keywords": [
+    "sistema-rachas",
+    "domain",
+    "npm-package"
+  ],
+  "author": "João Batista Gomes Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhonxbatista/sistema-rachas-domain/issues"
+  },
+  "homepage": "https://github.com/jhonxbatista/sistema-rachas-domain#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "uid": "^2.0.2",
+    "zod": "^3.23.8"
+  }
+}
