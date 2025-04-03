@@ -1,0 +1,1 @@
+var R=(I=>(I.GOALKEEPER="Goleiro",I.DEFENDER="Zagueiro",I.RIGHT_BACK="Lateral Direito",I.LEFT_BACK="Lateral Esquerdo",I.MIDFIELDER="Meia",I.DEFENSIVE_MIDFIELDER="Volante",I.ATTACKING_MIDFIELDER="Meia Atacante",I.RIGHT_WINGER="Ponta Direita",I.LEFT_WINGER="Ponta Esquerda",I.FORWARD="Atacante",I.STRIKER="Centroavante",I))(R||{});export{R as P};

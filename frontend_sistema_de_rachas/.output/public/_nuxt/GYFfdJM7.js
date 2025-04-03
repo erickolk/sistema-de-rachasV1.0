@@ -1,0 +1,1 @@
+import{_ as o,c as t,a,o as n}from"./DJoCQzgD.js";const s={};function r(c,e){return n(),t("div",null,e[0]||(e[0]=[a("div",{class:"container mx-auto p-4"},[a("h1",{class:"text-2xl font-bold mb-4"},"Bem-vindo à Minha Aplicação"),a("p",null,"Esta é uma página de exemplo para testar a Top Bar.")],-1)]))}const i=o(s,[["render",r]]);export{i as default};
