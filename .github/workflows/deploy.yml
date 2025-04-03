@@ -16,14 +16,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "yarn"
+          cache: yarn
+          # Aponte para o yarn.lock que está dentro de frontend_sistema_de_rachas
           cache-dependency-path: frontend_sistema_de_rachas/yarn.lock
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - name: Install dependencies (frontend)
+        run: yarn install
+        working-directory: ./frontend_sistema_de_rachas
 
-      - name: Build project
+      - name: Build project (frontend)
         run: yarn build
+        working-directory: ./frontend_sistema_de_rachas
 
       - name: Deploy to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -31,7 +34,8 @@ jobs:
           host: ${{ secrets.EC2_IP }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ".output/"
+          # Ajuste o source para apontar para a pasta .output do seu front-end
+          source: "frontend_sistema_de_rachas/.output/"
           target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas"
           overwrite: true
 
