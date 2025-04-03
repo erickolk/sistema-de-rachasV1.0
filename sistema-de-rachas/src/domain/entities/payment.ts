@@ -54,3 +54,29 @@ export class Payment {
         });
     }
 }
+
+export interface Payment {
+  id?: string;
+  userId: string;
+  matchId: string;
+  soccerFieldId: string;
+  amount: number;
+  status: PaymentStatus;
+  paymentMethod: PaymentMethod;
+  paymentDate: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  CANCELLED = 'CANCELLED',
+}
+
+export enum PaymentMethod {
+  PIX = 'PIX',
+  CASH = 'CASH',
+  CREDIT_CARD = 'CREDIT_CARD',
+  DEBIT_CARD = 'DEBIT_CARD',
+}
