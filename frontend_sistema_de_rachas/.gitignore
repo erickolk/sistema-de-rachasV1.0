@@ -25,5 +25,4 @@ logs
 !.env.example
 
 # Yarn
-yarn.lock
 yarn
