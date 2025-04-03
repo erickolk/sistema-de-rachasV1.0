@@ -1,7 +1,7 @@
 import { ptBrLocale } from "./utils/date/calendar-locale";
 import { TwoEnd } from './assets/theme/2end.theme';
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
   modules: ["@primevue/nuxt-module"],
   components: {
     global: true,
