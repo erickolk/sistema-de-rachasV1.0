@@ -16,6 +16,8 @@ export type MatchParams = {
   teams?: Array<Team>;
   user: User;
   payment?: Payment;
+  managers?: Array<string>;
+  createdBy?: string;
 };
 
 export class Match {
@@ -30,6 +32,8 @@ export class Match {
   description: string;
   user: User;
   payment?: Payment;
+  managers: Array<string>;
+  createdBy: string;
 
   public constructor(params: MatchParams) {
     this.id = params.id;
@@ -43,6 +47,8 @@ export class Match {
     this.user = params.user;
     this.payment = params.payment;
     this.paymentListPlayers = [];
+    this.managers = params.managers || [];
+    this.createdBy = params.createdBy || params.user.id;
   }
 
   public addPlayer(player: Player) {

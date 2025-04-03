@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 export const PaymentPresenter = (payment: Payment): PaymentDto => {
   return {
-    id: payment.id.toString(),
+    id: payment.id?.toString() || '',
     amount: payment.amount,
     discount: payment.discount,
     totalAmountWithDiscount: payment.totalAmountWithDiscount,
@@ -14,14 +14,14 @@ export const PaymentPresenter = (payment: Payment): PaymentDto => {
     paymentDate: dayjs(payment.paymentDate).format('DD/MM/YYYY'),
     paymentMethod: payment.paymentMethod,
     match: {
-      id: payment.match.id.toString(),
+      id: payment.match.id?.toString() || '',
       name: payment.match.name,
       soccerField: {
         name: payment.match.soccerField.name
       }
     },
     user: {
-      id: payment.user.id.toString(),
+      id: payment.user.id?.toString() || '',
       name: payment.user.name,
     },
   };

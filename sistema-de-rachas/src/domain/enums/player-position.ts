@@ -10,4 +10,5 @@ export enum PlayerPositionsEnum {
   LEFT_WINGER = 'Ponta Esquerda',
   FORWARD = 'Atacante',
   STRIKER = 'Centroavante',
+  DEFAULT_POSITION = 'Indefinido',
 }

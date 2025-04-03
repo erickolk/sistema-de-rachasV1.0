@@ -28,5 +28,5 @@ export const MatchPresenter = (match: Match | null): MatchDto | null => {
 
 export const MatchsPresenter = (matchs: Match []): MatchDto[] | null => {
   if (!matchs.length) return [];
-  return matchs.map(match => MatchPresenter(match))
+  return matchs.filter(match => match !== null).map(match => MatchPresenter(match)) as MatchDto[];
 };

@@ -1,26 +1,51 @@
 import { Match } from './match';
 import { User } from './user';
 
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  CANCELLED = 'CANCELLED',
+}
+
+export enum PaymentMethod {
+  PIX = 'PIX',
+  CASH = 'CASH',
+  CREDIT_CARD = 'CREDIT_CARD',
+  DEBIT_CARD = 'DEBIT_CARD',
+}
+
 export type PaymentParams = {
-    id: string;
+    id?: string;
     paymentDate: Date;
-    paymentMethod: string;
+    paymentMethod: PaymentMethod | string;
     amount: number;
     discount?: number;
     totalAmountWithDiscount: number;
     match: Match;
     user: User;
+    userId?: string;
+    matchId?: string;
+    soccerFieldId?: string;
+    status?: PaymentStatus;
+    createdAt?: Date;
+    updatedAt?: Date;
 };
 
 export class Payment {
-    id: string;
+    id?: string;
     paymentDate: Date;
-    paymentMethod: string;
+    paymentMethod: PaymentMethod | string;
     amount: number;
     discount?: number;
     totalAmountWithDiscount: number;
     match: Match;
     user: User;
+    userId?: string;
+    matchId?: string;
+    soccerFieldId?: string;
+    status?: PaymentStatus;
+    createdAt?: Date;
+    updatedAt?: Date;
 
     constructor(params: PaymentParams) {
         this.id = params.id;
@@ -31,6 +56,12 @@ export class Payment {
         this.totalAmountWithDiscount = params.totalAmountWithDiscount;
         this.match = params.match;
         this.user = params.user;
+        this.userId = params.userId;
+        this.matchId = params.matchId;
+        this.soccerFieldId = params.soccerFieldId;
+        this.status = params.status;
+        this.createdAt = params.createdAt;
+        this.updatedAt = params.updatedAt;
     }
 
     get formattedAmount(): string {
@@ -53,30 +84,4 @@ export class Payment {
             currency: 'BRL',
         });
     }
-}
-
-export interface Payment {
-  id?: string;
-  userId: string;
-  matchId: string;
-  soccerFieldId: string;
-  amount: number;
-  status: PaymentStatus;
-  paymentMethod: PaymentMethod;
-  paymentDate: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export enum PaymentStatus {
-  PENDING = 'PENDING',
-  PAID = 'PAID',
-  CANCELLED = 'CANCELLED',
-}
-
-export enum PaymentMethod {
-  PIX = 'PIX',
-  CASH = 'CASH',
-  CREDIT_CARD = 'CREDIT_CARD',
-  DEBIT_CARD = 'DEBIT_CARD',
 }

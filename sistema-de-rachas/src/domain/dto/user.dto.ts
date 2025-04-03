@@ -6,6 +6,7 @@ export type CreateUserDto = {
   password: string;
   role: UserRoleEnum;
   photoUrl?: string;
+  isMatchAdmin?: boolean;
 };
 
 export type LoginDto = {

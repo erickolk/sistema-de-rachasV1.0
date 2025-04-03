@@ -33,7 +33,7 @@ export const paymentSchema: Schema = new Schema({
 });
 
 paymentSchema.pre('save', function (next) {
-    const payment = this as PaymentDocument;
+    const payment = this as unknown as PaymentDocument;
     payment.totalAmountWithDiscount = payment.amount - (payment.discount || 0);
     next();
 });

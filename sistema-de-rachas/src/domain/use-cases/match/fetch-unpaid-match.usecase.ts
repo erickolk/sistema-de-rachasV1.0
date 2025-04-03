@@ -13,7 +13,7 @@ export class FechUnpaidMatchUseCase {
 
   static async execute(userId: string): Promise<Either<HttpError, Array<Match>>> {
     try {
-        const matchs = await FechUnpaidMatchUseCase.repository.unpaidMatchs(userId);
+        const matchs = await FechUnpaidMatchUseCase.repository.findUnpaidMatchesByUser(userId);
 
       if (!matchs.length) {
         return right([]);
