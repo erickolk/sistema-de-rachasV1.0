@@ -16,6 +16,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "@primevue/core": "^4.0.7",
     "@primevue/themes": "^4.0.1",
+    "@unhead/ssr": "^2.0.3",
     "@vee-validate/i18n": "^4.13.2",
     "@vee-validate/rules": "^4.13.2",
     "@vee-validate/zod": "^4.13.2",
