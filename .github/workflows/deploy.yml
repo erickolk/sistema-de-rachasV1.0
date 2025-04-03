@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: 20
           cache: "yarn"
+          cache-dependency-path: frontend_sistema_de_rachas/yarn.lock
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
