@@ -30,16 +30,28 @@ jobs:
       - name: List files before transfer
         run: ls -R frontend_sistema_de_rachas/.output/
 
+      # Novo passo para limpar o diretório remoto antes do deploy
+      - name: Cleanup EC2 directory
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_IP }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            rm -rf /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/*
+
+      # Passo de deploy corrigido
       - name: Deploy to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_IP }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "frontend_sistema_de_rachas/.output/*" # Alteração crítica aqui
+          source: "frontend_sistema_de_rachas/.output/."  # Alteração crítica aqui
           target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output"
           overwrite: true
 
+      # Verificação ajustada
       - name: Verify files on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -52,6 +64,7 @@ jobs:
             echo "\nConteúdo do server:"
             ls -R /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/server/
 
+      # Reinício do PM2 ajustado
       - name: Restart PM2
         uses: appleboy/ssh-action@v1.0.0
         with:
