@@ -42,6 +42,9 @@ jobs:
           target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas"
           overwrite: true
 
+      - name: List files after transfer
+        run: ls -R /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/
+
       - name: Restart PM2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -50,6 +53,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas
+            echo "Conteúdo do diretório .output/server:"
+            ls -R .output/server/
             if [ -f ".output/server/index.mjs" ]; then
               pm2 restart nuxt-app || pm2 start .output/server/index.mjs --name "nuxt-app"
             else
