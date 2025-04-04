@@ -50,7 +50,6 @@ jobs:
           source: "frontend_sistema_de_rachas/.output"
           target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas"
           overwrite: true
-          recursive: true  # ESSENCIAL para subdiretórios
 
       # Verificação reforçada
       - name: Verify files on EC2
