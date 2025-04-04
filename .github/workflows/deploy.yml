@@ -28,7 +28,7 @@ jobs:
         working-directory: ./frontend_sistema_de_rachas
 
       - name: List files before transfer
-        run: ls -R frontend_sistema_de_rachas/.output/
+        run: ls -R ./frontend_sistema_de_rachas/.output/
 
       # Limpeza total do diretório remoto
       - name: Cleanup EC2 directory
@@ -40,14 +40,13 @@ jobs:
           script: |
             rm -rf /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output
 
-      # Deploy corrigido com recursive e caminho correto
       - name: Deploy to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_IP }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "frontend_sistema_de_rachas/.output"
+          source: "./frontend_sistema_de_rachas/.output"
           target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas"
           overwrite: true
 
