@@ -17,7 +17,6 @@ jobs:
         with:
           node-version: 20
           cache: yarn
-          # Aponte para o yarn.lock que está dentro de frontend_sistema_de_rachas
           cache-dependency-path: frontend_sistema_de_rachas/yarn.lock
 
       - name: Install dependencies (frontend)
@@ -37,13 +36,19 @@ jobs:
           host: ${{ secrets.EC2_IP }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Ajuste o source para apontar para a pasta .output do seu front-end
           source: "frontend_sistema_de_rachas/.output/"
-          target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas"
+          target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output"
           overwrite: true
 
-      - name: List files after transfer
-        run: ls -R /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/
+      - name: Verify files on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_IP }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            ls -la /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/
+            ls -R /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/server/
 
       - name: Restart PM2
         uses: appleboy/ssh-action@v1.0.0
@@ -52,12 +57,11 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas
-            echo "Conteúdo do diretório .output/server:"
-            ls -R .output/server/
-            if [ -f ".output/server/index.mjs" ]; then
-              pm2 restart nuxt-app || pm2 start .output/server/index.mjs --name "nuxt-app"
-            else
-              echo "Arquivo index.mjs não encontrado."
-            fi
+            cd /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/server
+            echo "Conteúdo do diretório atual:"
+            pwd
+            ls -la
+            pm2 delete nuxt-app || true
+            pm2 start index.mjs --name "nuxt-app"
             pm2 save
+            pm2 list
