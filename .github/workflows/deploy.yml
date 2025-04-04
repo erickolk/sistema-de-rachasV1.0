@@ -27,66 +27,37 @@ jobs:
         run: yarn build
         working-directory: ./frontend_sistema_de_rachas
 
-      # Verificar a geração da pasta .output
-      - name: Verify .output directory exists
+      # Verificar a estrutura do diretório após o build
+      - name: Verify output directory structure
         run: |
-          if [ -d "frontend_sistema_de_rachas/.output" ]; then
-            echo "✅ .output directory exists"
-            ls -la frontend_sistema_de_rachas/.output
-          else
-            echo "❌ .output directory DOES NOT exist"
-            echo "Contents of frontend_sistema_de_rachas:"
-            ls -la frontend_sistema_de_rachas
-            exit 1
-          fi
+          echo "Estrutura do diretório após o build:"
+          ls -la frontend_sistema_de_rachas/.output
+          echo "Conteúdo do server:"
+          ls -la frontend_sistema_de_rachas/.output/server
 
-      # Compactar a pasta .output
-      - name: Compress output directory
-        run: |
-          cd frontend_sistema_de_rachas
-          tar -czvf nuxt-output.tar.gz .output
-          ls -la nuxt-output.tar.gz
+      # Fazer deploy diretamente (sem compactar)
+      - name: Deploy to EC2
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: frontend_sistema_de_rachas/.output/
+          remote_path: /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/
+          remote_host: ${{ secrets.EC2_IP }}
+          remote_user: ec2-user
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Limpeza no EC2
-      - name: Cleanup EC2 directory
+      # Verificar a instalação no EC2
+      - name: Verify installation on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_IP }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output
-            mkdir -p /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas
-
-      # Enviar o arquivo compactado
-      - name: Deploy compressed file to EC2
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_IP }}
-          username: ec2-user
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "frontend_sistema_de_rachas/nuxt-output.tar.gz"
-          target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas"
-          overwrite: true
-
-      # Descompactar e verificar
-      - name: Extract and verify files
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.EC2_IP }}
-          username: ec2-user
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas
-            echo "📦 Extracting nuxt-output.tar.gz..."
-            tar -xzvf nuxt-output.tar.gz
-            rm nuxt-output.tar.gz
-            
-            echo "✅ Verificando estrutura completa:"
-            ls -la .output
-            
-            echo "📂 Conteúdo do server:"
-            ls -la .output/server
+            echo "✅ Verificando estrutura no EC2:"
+            ls -la /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output
+            echo "📂 Conteúdo do server no EC2:"
+            ls -la /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/server
 
       # Reiniciar PM2
       - name: Restart PM2
