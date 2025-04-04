@@ -28,6 +28,9 @@ jobs:
         run: yarn build
         working-directory: ./frontend_sistema_de_rachas
 
+      - name: List files before transfer
+        run: ls -R frontend_sistema_de_rachas/.output/
+
       - name: Deploy to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -47,5 +50,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas
-            pm2 restart nuxt-app || pm2 start .output/server/index.mjs --name "nuxt-app"
+            if [ -f ".output/server/index.mjs" ]; then
+              pm2 restart nuxt-app || pm2 start .output/server/index.mjs --name "nuxt-app"
+            else
+              echo "Arquivo index.mjs não encontrado."
+            fi
             pm2 save

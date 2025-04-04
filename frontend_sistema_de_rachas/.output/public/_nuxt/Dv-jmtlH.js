@@ -1,1 +1,0 @@
-import{_ as t,c as o,o as n,A as c}from"./DJoCQzgD.js";const s={},r={class:"container mt-4"};function _(e,a){return n(),o("div",r,[c(e.$slots,"default")])}const d=t(s,[["render",_]]);export{d as default};

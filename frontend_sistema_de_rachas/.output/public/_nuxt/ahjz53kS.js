@@ -1,1 +1,0 @@
-import{m as a,c as e,A as n,t as l,o as s}from"./DJoCQzgD.js";const r={class:"mb-6"},i={key:1,class:"text-lg text-primary font-bold"},d=a({__name:"PageHeader",props:{title:{type:String}},setup(t){return(o,c)=>(s(),e("div",r,[t.title?(s(),e("h1",i,l(t.title),1)):n(o.$slots,"title",{key:0})]))}});export{d as default};
