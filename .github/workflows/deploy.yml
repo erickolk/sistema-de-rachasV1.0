@@ -27,10 +27,27 @@ jobs:
         run: yarn build
         working-directory: ./frontend_sistema_de_rachas
 
-      - name: List files before transfer
-        run: ls -R ./frontend_sistema_de_rachas/.output/
+      # Verificar a geração da pasta .output
+      - name: Verify .output directory exists
+        run: |
+          if [ -d "frontend_sistema_de_rachas/.output" ]; then
+            echo "✅ .output directory exists"
+            ls -la frontend_sistema_de_rachas/.output
+          else
+            echo "❌ .output directory DOES NOT exist"
+            echo "Contents of frontend_sistema_de_rachas:"
+            ls -la frontend_sistema_de_rachas
+            exit 1
+          fi
 
-      # Limpeza total do diretório remoto
+      # Compactar a pasta .output
+      - name: Compress output directory
+        run: |
+          cd frontend_sistema_de_rachas
+          tar -czvf nuxt-output.tar.gz .output
+          ls -la nuxt-output.tar.gz
+
+      # Limpeza no EC2
       - name: Cleanup EC2 directory
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -39,31 +56,39 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             rm -rf /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output
+            mkdir -p /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas
 
-      - name: Deploy to EC2
+      # Enviar o arquivo compactado
+      - name: Deploy compressed file to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_IP }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./frontend_sistema_de_rachas/.output"
+          source: "frontend_sistema_de_rachas/nuxt-output.tar.gz"
           target: "/home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas"
           overwrite: true
 
-      # Verificação reforçada
-      - name: Verify files on EC2
+      # Descompactar e verificar
+      - name: Extract and verify files
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_IP }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "✅ Estrutura completa:"
-            ls -la /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output
-            echo "\n📂 Conteúdo do server:"
-            ls -R /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/server
+            cd /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas
+            echo "📦 Extracting nuxt-output.tar.gz..."
+            tar -xzvf nuxt-output.tar.gz
+            rm nuxt-output.tar.gz
+            
+            echo "✅ Verificando estrutura completa:"
+            ls -la .output
+            
+            echo "📂 Conteúdo do server:"
+            ls -la .output/server
 
-      # Reinício do PM2 com caminho absoluto
+      # Reiniciar PM2
       - name: Restart PM2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -71,8 +96,16 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas/.output/server
-            pm2 delete nuxt-app || true
-            pm2 start index.mjs --name "nuxt-app"
-            pm2 save
-            pm2 list
+            cd /home/ec2-user/sistema-de-rachasV1.0/frontend_sistema_de_rachas
+            if [ -f ".output/server/index.mjs" ]; then
+              echo "🚀 Reiniciando aplicação..."
+              pm2 delete nuxt-app || true
+              pm2 start .output/server/index.mjs --name "nuxt-app"
+              pm2 save
+              pm2 list
+            else
+              echo "❌ ERRO: index.mjs não encontrado!"
+              echo "Conteúdo da pasta .output/server:"
+              ls -la .output/server
+              exit 1
+            fi
